@@ -6,14 +6,14 @@ INC_DIR := $(ROOT_DIR)/inc
 SRC_DIR := $(ROOT_DIR)/src
 OBJ_DIR := $(ROOT_DIR)/obj
 
-SRC_EXCLUDE := $(SRC_DIR)/parser_old.c
+SRC_EXCLUDE :=
 
-CFLAGS := -Wall -Werror -I$(INC_DIR) -ggdb3
+CFLAGS := -Wall -Werror -I$(INC_DIR)
 LDFLAGS := 
 
 SRCS := $(filter-out $(SRC_EXCLUDE), $(wildcard $(SRC_DIR)/*.c))
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS)) 
-TARGET := libarg.so
+TARGET :=  
 
 all: build clean
 build: $(TARGET)
