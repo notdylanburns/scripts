@@ -1,0 +1,23 @@
+export MY_GH=https://github.com/notdylanburns
+
+alias Wireshark="sudo wireshark >> /dev/null &"
+alias Ettercap="sudo ettercap -G >> /dev/null &"
+alias dns="getent hosts"
+alias code="snap run code"
+alias code_flatpak="flatpak run com.visualstudio.code"
+alias pt="gwenview https://sciencenotes.org/wp-content/uploads/2017/05/PeriodicTableWallpaper2017BBG.png"
+alias key="chmod 400"
+
+new_header () {
+	guard="_${1:u}_H_GUARD_"
+	echo -n "#ifndef $guard\n#define $guard\n\n#endif" > "$1.h"
+	echo -n "#include \"$1.h\"\n\n" > "$1.c"
+}
+
+new_header_d () {
+	guard="_${1:u}_H_GUARD_"
+        echo -n "#ifndef $guard\n#define $guard\n\n#endif" > "inc/$1.h"
+        echo -n "#include \"$1.h\"\n\n" > "src/$1.c"
+}
+
+alias sso="aws configure sso --profile default"
