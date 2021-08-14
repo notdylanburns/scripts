@@ -13,6 +13,11 @@ enum ArgType {
     ARG_POSITIONAL,
 };
 
+enum ParseMode {
+    PM_DEFAULT,
+    PM_SEPARATE,
+};
+
 struct ParseOption {
     enum ArgType type;
     char *name;
@@ -38,6 +43,7 @@ struct ParseOption {
 }
 
 extern struct ParseOption *new_parseoption(enum ArgType t, char *name, unsigned int num);
-extern struct Result *parse_args(int argc, char **argv, int num_opts, struct ParseOption **opts);
+extern struct Result *parse_args(int argc, char **argv, unsigned int num_opts, struct ParseOption **opts, enum ParseMode pm);
+extern void destroy_parseoption(struct ParseOption *o);
 
 #endif
