@@ -30,19 +30,39 @@ struct OptionMap *new_optionmap() {
 struct LinkedList *add_kvpair(struct OptionMap *o, char *k, char *v) {
     unsigned int index = o->hashf(k) % NUM_BUCKETS;
 
-    if (o->buckets[index] == NULL) {
-        o->buckets[index] = malloc(sizeof(struct ll_));
-        if (o->buckets[index] == NULL)
-            return NULL;
-    }
-
-    struct ll_ *bucket = o->buckets[index];
-    while (bucket->next != NULL) {
-        if (!strcmp(bucket->key, k)) break;
+    struct ll_ *prev = NULL, *bucket = o->buckets[index];
+    char exists = 0;
+    while (bucket != NULL) {
+        prev = bucket;
+        if (!strcmp(bucket->key, k)) { 
+            exists = 1;
+            free(k);
+            break;
+        }
         bucket = bucket->next;
     }
 
-    bucket->key = k;
+    if (!exists) {
+        if (prev == NULL) {
+            o->buckets[index] = malloc(sizeof(struct ll_));
+            if (o->buckets[index] == NULL)
+                return NULL;
+
+            bucket = o->buckets[index];
+        } else {
+            prev->next = malloc(sizeof(struct ll_));
+            if (prev->next == NULL)
+                return NULL;
+
+            bucket = prev->next;
+        }
+
+        bucket->key = k;
+        bucket->value = NULL;
+        bucket->next = NULL;
+        
+    }
+
     if (bucket->value == NULL) {
         bucket->value = new_linkedlist();
         if (bucket->value == NULL)
@@ -72,10 +92,13 @@ struct LinkedList *get_opt(struct OptionMap *o, char *key) {
 void destroy_optionmap(struct OptionMap *o) {
     for (int i = 0; i < NUM_BUCKETS; i++) {
         if (o->buckets[i] != NULL) {
-            struct ll_ *b = o->buckets[i];
+            struct ll_ *tmp = NULL, *b = o->buckets[i];
             while (b != NULL) {
+                free(b->key);
                 destroy_linkedlist(b->value);
-                b = b->next;
+                tmp = b->next;
+                free(b);
+                b = tmp;
             }
         }
     }

@@ -30,7 +30,7 @@ struct ListItem *add_listitem(struct LinkedList *l, char *name) {
 
         next->next = li;
     }
-    
+
     l->size++;
 
     return li;
@@ -70,8 +70,11 @@ void destroy_linkedlist(struct LinkedList *l) {
         destroy_listitem(li);
         li = next;
     }
+
+    free(l);
 }
 
 void destroy_listitem(struct ListItem *l) {
+    free(l->name);
     free(l);
 }

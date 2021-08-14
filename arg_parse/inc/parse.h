@@ -7,10 +7,11 @@
 
 #include "result.h"
 
+#define ARGS_REST -1
+
 enum ArgType {
     ARG_SWITCH,
     ARG_OPTION,
-    ARG_POSITIONAL,
 };
 
 enum ParseMode {
@@ -21,7 +22,7 @@ enum ParseMode {
 struct ParseOption {
     enum ArgType type;
     char *name;
-    unsigned int num_values;
+    int num_values;
 };
 
 #define NewParseOption(t, n, v) (struct ParseOption){ \
@@ -42,7 +43,8 @@ struct ParseOption {
     .num_values = (v), \
 }
 
-extern struct ParseOption *new_parseoption(enum ArgType t, char *name, unsigned int num);
+extern struct ParseOption *new_parseoption(enum ArgType t, char *name, int num);
+extern struct ParseOption *get_parseoption(struct ParseOption **opts, unsigned int num_opts, char *f);
 extern struct Result *parse_args(int argc, char **argv, unsigned int num_opts, struct ParseOption **opts, enum ParseMode pm);
 extern void destroy_parseoption(struct ParseOption *o);
 

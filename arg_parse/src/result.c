@@ -29,21 +29,51 @@ char *index_postional(struct Result *r, unsigned int index) {
 }
 
 switch_t add_switch(struct Result *r, char *s) {
-    struct ListItem *li = add_listitem(r->switches, s);
-    if (li == NULL)
+    char *sh = malloc(strlen(s) + 1);
+    if (sh == NULL)
         return NULL;
+
+    strncpy(sh, s, strlen(s) + 1);
+
+    struct ListItem *li = add_listitem(r->switches, sh);
+    if (li == NULL) {
+        free(sh);
+        return NULL;
+    }
 
     return li->name;
 }
 
 optionlist_t *add_option(struct Result *r, char *key, char *value) {
-    return add_kvpair(r->options, key, value);
+    char *kh = malloc(strlen(key) + 1);
+    if (kh == NULL)
+        return NULL;
+
+    strncpy(kh, key, strlen(key) + 1);
+
+    char *vh = malloc(strlen(value) + 1);
+    if (vh == NULL) {
+        free(kh);
+        return NULL;
+    }
+
+    strncpy(vh, value, strlen(value) + 1);
+
+    return add_kvpair(r->options, kh, vh);
 }
 
 char *add_positional(struct Result *r, char *p) {
-    struct ListItem *li = add_listitem(r->positional, p);
-    if (li == NULL)
+    char *ph = malloc(strlen(p) + 1);
+    if (ph == NULL)
         return NULL;
+
+    strncpy(ph, p, strlen(p) + 1);
+
+    struct ListItem *li = add_listitem(r->positional, ph);
+    if (li == NULL) {
+        free(ph);
+        return NULL;
+    }
 
     return li->name;
 }
